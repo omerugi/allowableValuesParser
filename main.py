@@ -21,10 +21,13 @@ def parse_string():
         input_string = input_string[1:-1]
 
     # Split the input string by commas and strip spaces
-    values = [val.strip() for val in input_string.split(',')]
-
+    try:
+        values = process_string(input_string)
+    except Exception as e:
+        messagebox.showwarning("Input Error", "Please enter a valid string with ',' or '/' ")
+        return
     # Format the output string
-    formatted_string = ', type="string", allowableValues = {' + ','.join(f'"{val}"' for val in values) + '}'
+    formatted_string = 'type="string", allowableValues = {' + ','.join(f'"{val}"' for val in values) + '}'
 
     # Display the result in the output box
     output_text.delete(1.0, tk.END)
@@ -39,6 +42,18 @@ def copy_to_clipboard():
         messagebox.showinfo("Copied", "Formatted text has been copied to the clipboard")
     else:
         messagebox.showwarning("Copy Error", "No text to copy")
+
+def process_string(input_string):
+    if "," in input_string and "/" in input_string:
+        raise ValueError("String contains both ',' and '/'")
+    elif "," in input_string:
+        values = [val.strip() for val in input_string.split(',')]
+    elif "/" in input_string:
+        values = [val.strip() for val in input_string.split('/')]
+    else:
+        raise ValueError("String does not contain either ',' or '/'")
+
+    return values
 
 # GUI setup
 window = tk.Tk()
