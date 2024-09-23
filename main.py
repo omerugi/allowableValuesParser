@@ -13,7 +13,9 @@ def parse_string():
     # Check if "allowableValues = ..." exists and remove it
     if "allowableValues" in input_string:
         # Remove the allowableValues = {...} part
-        input_string = input_string.split('allowableValues = ')[-1]
+        input_string = input_string.split('allowableValues')[-1]
+        input_string = input_string.split('=')[-1]
+        input_string = input_string.strip(' ')
         input_string = input_string.strip('{}')
 
     # Check if the input has double quotes and remove them
